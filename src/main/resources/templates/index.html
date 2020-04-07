@@ -1,0 +1,349 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Deployer</title>
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- bootstrap-->
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" th:href="@{/css/main.css?v=1}"/>
+
+</head>
+<body>
+
+<div class="container index">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            <img alt="" class="d-inline-block align-top" height="25" th:src="@{/images/icon.png}" width="25">
+            Deployer
+        </a>
+        <button aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler"
+                data-target="#navbarTogglerDemo02" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item dropdown">
+                    <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+                       data-toggle="dropdown"
+                       href="#" id="navbarDropdown" role="button">
+                        Help
+                    </a>
+                    <div aria-labelledby="navbarDropdown" class="dropdown-menu">
+                        <a class="dropdown-item" href="javascript:void(0);">Items coming soon...</a>
+                        <!--                        <a  class="dropdown-item" href="#">Run server app</a>-->
+                        <!--                        <a class="dropdown-item" href="#">Use terminal app</a>-->
+                        <!--                        <a class="dropdown-item" href="#">Configuration app</a>-->
+                        <div class="dropdown-divider"></div>
+                        <!--                        <a class="dropdown-item" href="#">Check for Updates</a>-->
+                        <a class="dropdown-item" data-target="#exampleModal" data-toggle="modal"
+                           href="javascript:void(0);">About</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <button class="btn btn-outline-success my-2 my-sm-0" id="authorization">
+                    <span>Authorization</span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="alert alert-success" id="alert-success" role="alert" style="margin-top: 30px; display: none;"></div>
+    <div class="alert alert-danger" id="alert-danger" role="alert" style="margin-top: 30px; display: none;"></div>
+
+    <div style="margin-top: 30px;">
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="jumbotron">
+
+                    <h1 class="display-4">Hello!</h1>
+                    <p class="lead">Deployer app deployment assistant on Google Play and a little bit more.</p>
+                    <hr class="my-4">
+                    <div class="lead">
+                        <ul>
+                            <li>
+                                Web interface for generate access token Oauth 2.0. You see him now :)
+                            </li>
+                            <li>
+                                Building apk or bundle package default build types as well as custom
+                            </li>
+                            <li>
+                                Upload to Google Play production, internal... (Play Developer API)
+                            </li>
+                            <li>
+                                CHANGELOG.md generation based git history (<a href="https://www.thymeleaf.org"
+                                                                              target="_blank">Thymeleaf</a>)
+                            </li>
+                            <li>
+                                Newsletter after upload build in Google Play (Gmail API)
+                            </li>
+                            <li>
+                                Connect webhooks slack after upload test or prod
+                            </li>
+                            <li>
+                                One file for all features! (~42MB)
+                            </li>
+                        </ul>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 style="margin-top: 30px;">Used technologies</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="carousel slide" data-ride="carousel" id="carouselExampleSlidesOnly">
+                <div class="carousel-inner">
+
+                    <div class="carousel-item active">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top"
+                                         th:src="@{/images/gradle-logo-png-transparent.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Gradle Build Tool</h5>
+                                        <a class="btn btn-primary" href="https://gradle.org/"
+                                           target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top"
+                                         style="padding: 6px;"
+                                         th:src="@{/images/kotlin.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Kotlin</h5>
+                                        <a class="btn btn-primary" href="https://kotlinlang.org/" target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top"
+                                         th:src="@{/images/java-icon.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Java</h5>
+                                        <a class="btn btn-primary" href="https://www.java.com/"
+                                           target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top"
+                                         th:src="@{/images/spring.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Spring framework</h5>
+                                        <a class="btn btn-primary" href="https://spring.io/" target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="carousel-item">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top" th:src="@{/images/thymeleaf.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Thymeleaf</h5>
+                                        <a class="btn btn-primary" href="https://www.thymeleaf.org/"
+                                           target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top"
+                                         style="padding: 6px;"
+                                         th:src="@{/images/slack.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Slack Webhook</h5>
+                                        <a class="btn btn-primary" href="https://api.slack.com/messaging/webhooks"
+                                           target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top"
+                                         th:src="@{/images/cloudPlatform.jpg}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Play Developer API</h5>
+                                        <a class="btn btn-primary"
+                                           href="https://developers.google.com/android-publisher" target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top"
+                                         th:src="@{/images/gmail.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Gmail API</h5>
+                                        <a class="btn btn-primary" href="https://developers.google.com/gmail/api"
+                                           target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="carousel-item">
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top" style="padding: 6px;"
+                                         th:src="@{/images/bootstrap.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Bootstrap</h5>
+                                        <a class="btn btn-primary" href="https://getbootstrap.com/"
+                                           target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..."
+                                         class="card-img-top"
+                                         th:src="@{/images/jquery-icon.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">jQuery</h5>
+                                        <a class="btn btn-primary" href="https://jquery.com" target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top"
+                                         th:src="@{/images/sqllite.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">SQLite</h5>
+                                        <a class="btn btn-primary" href="https://www.sqlite.org/index.html"
+                                           target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <img alt="..." class="card-img-top"
+                                         th:src="@{/images/git.png}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Git</h5>
+                                        <a class="btn btn-primary" href="https://git-scm.com/"
+                                           target="_blank">More...</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="exampleModal" role="dialog"
+         tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Deployer</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Version: <span th:text="${version}"></span>
+                    <br>
+                    <a href="https://keygenqt.com" target="_blank">https://keygenqt.com</a>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(function() {
+        $('.carousel').carousel({
+          interval: 3000
+        })
+        $('#authorization').click(function () {
+            if (!$(this).hasClass('disabled')) {
+                window.location.href = "/oauth";
+            }
+        });
+    })
+
+</script>
+
+<script th:if="${code != ''}">
+    function checkCode() {
+        $.ajax({
+            url: "/ajax/code",
+            data: {'code': '[[${code}]]'},
+            dataType: "json",
+            success: function (data) {
+                if (!data.process) {
+                    $('#authorization').removeClass('disabled');
+                    if (data.success !== undefined) {
+                        $('#alert-success').text(data.success).show();
+                        setTimeout(function () {
+                            $('#alert-success').hide()
+                        }, 5000);
+                    } else {
+                        $('#alert-danger').text(data.error).show();
+                        setTimeout(function () {
+                            $('#alert-danger').hide()
+                        }, 5000);
+                    }
+                } else {
+                    $('#authorization').addClass('disabled');
+                    setTimeout(function () {
+                        checkCode()
+                    }, 2000);
+                }
+            }
+        });
+    }
+
+    $(function () {
+        checkCode()
+    })
+
+</script>
+
+</body>
+</html>

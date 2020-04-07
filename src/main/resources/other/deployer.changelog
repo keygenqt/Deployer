@@ -1,0 +1,24 @@
+/*[-
+ *
+ * See https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html   
+ *
+ * -]*/
+
+## Updated: [(${date})]
+
+## Info
+
+[# th:if="!${tags_map.empty}"]- Last tag: [(${tags_last})][/]
+- Count tag: [(${tags_count_changes})]
+
+[# th:if="!${tags_map.empty}"]
+[# th:if="${tags_count_changes} != 0"]## Versions[/]
+[# th:each="tag_map : ${tags_map}" ] [# th:if="${tag_map.to} != HEAD"] [# th:if="!${tag_map.items.empty}"]
+- [Version: [(${tag_map.to})] ([(${tag_map.date})])](#version-[(${tag_map.to_clear})]-[(${tag_map.date_clear})][(${tag_map.meridiem})]) [/][/][/]
+
+[# th:each="tag_map : ${tags_map}" ][# th:if="!${tag_map.items.empty}"]
+[# th:if="${tag_map.to} == HEAD"]## Version: not released [/][# th:if="${tag_map.to} != HEAD"]## Version: [(${tag_map.to})] ([(${tag_map.date})]) [/]
+[# th:each="types : ${tag_map.items_by_type}" ][# th:each="type : ${types}" ][# th:if="!${type.value.empty}"]
+[# th:if="${type.key} == [Feature]"]### Added[/][# th:if="${type.key} == [Bug]"]### Fixed[/][# th:if="${type.key} == [Change]"]### Changed[/]
+[# th:each="item : ${type.value}" ]* [(${item.id})] [(${item.type})] [(${item.commit})] ([(${item.name})]) [GitLab]([(${item.hash})]) [YouTrack](https://youtrack.pinxterapp.com/issue/[(${item.id})])
+[/][/][/][/][/][/][/]

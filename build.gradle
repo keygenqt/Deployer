@@ -1,0 +1,67 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.70'
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+}
+
+group 'deployer'
+
+sourceCompatibility = 1.8
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+dependencies {
+    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.28.0'
+    implementation group: 'com.j256.ormlite', name: 'ormlite-core', version: '5.1'
+    implementation group: 'com.j256.ormlite', name: 'ormlite-jdbc', version: '5.1'
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/retrofit
+    compile group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.8.1'
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/converter-gson
+    compile group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.8.1'
+    // https://mvnrepository.com/artifact/com.squareup.retrofit2/adapter-rxjava2
+    compile group: 'com.squareup.retrofit2', name: 'adapter-rxjava2', version: '2.8.1'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
+    compile group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.4.1'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.4.1'
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20190722'
+    // https://mvnrepository.com/artifact/ognl/ognl
+    compile group: 'ognl', name: 'ognl', version: '3.2.14'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.2.6.RELEASE'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.2.6.RELEASE'
+    implementation group: 'org.webjars', name: 'bootstrap', version: '4.4.1-1'
+    implementation group: 'org.webjars', name: 'jquery', version: '3.4.1'
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.3.71'
+}
+
+dependencies {
+    implementation 'com.google.api-client:google-api-client:1.23.0'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    implementation 'com.google.apis:google-api-services-gmail:v1-rev83-1.23.0'
+    implementation group: 'javax.mail', name: 'mail', version: '1.4'
+
+}

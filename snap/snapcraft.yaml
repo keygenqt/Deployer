@@ -1,0 +1,47 @@
+name: deployer
+base: core18
+version: '0.0.6'
+summary: Deployer app deployment assistant on Google Play and a little bit more.
+description: |
+  Deployer app deployment assistant on Google Play and a little bit more.
+
+  * Web interface for generate access token Oauth 2.0.
+  * Building apk or bundle package default build types as well as custom
+  * Upload to Google Play production, internal... (Play Developer API)
+  * CHANGELOG.md generation based git history (Thymeleaf)
+  * Newsletter after upload build in Google Play (Gmail API)
+  * Connect webhooks slack after upload test or prod
+  * One file for all features!
+
+grade: stable
+confinement: strict
+
+parts:
+  deployer:
+
+    plugin: gradle
+    gradle-output-dir: build/libs
+    gradle-options: [bootJar]
+    source: https://github.com/keygenqt/deployer.git
+    source-type: git
+    source-tag: master
+    build-environment:
+      - JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
+      - PATH: $JAVA_HOME/jre/bin:$PATH
+
+    build-packages:
+      - openjdk-8-jdk
+      - openjdk-8-jre
+      - ca-certificates
+      - ca-certificates-java
+    stage-packages:
+      - openjdk-8-jre
+      - ca-certificates
+      - ca-certificates-java
+
+apps:
+  deployer:
+    command: java -jar $SNAP/jar/deployer.jar
+    environment:
+      JAVA_HOME: $SNAP/usr/lib/jvm/java-8-openjdk-amd64
+      PATH: $JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH
