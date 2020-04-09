@@ -1,51 +1,56 @@
 Deployer
 ===================
 
-<img width="100px" src="https://github.com/keygenqt/deployer/blob/master/src/main/resources/static/images/icon.png" />
+![picture](https://bitbucket.org/keygenqt_work/deployer/raw/9634ac1c37f76f6594acf31a1df428a9344d4fc6/src/main/resources/static/images/icon2.png)
 
-## Latest Release
+## Release
 
-The latest version of the module is v0.0.6 `BETA!!!` **(in developing)**
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/deployer)
 
 #### Info:
 
 ```
-Usage: java -jar deployer.jar COMMAND=ARG...
+Usage: deployer COMMAND=ARG...
 
 Deployer is a tool for:
-    * Web interface for generate access token Oauth 2.0.
-    * Building apk or bundle package default build types as well as custom
+    * Web interface for generate access token Oauth 2.0
     * Upload to Google Play production, internal... (Play Developer API)
-    * CHANGELOG.md generation based git history (Thymeleaf)
     * Newsletter after upload build in Google Play (Gmail API)
-    * Connect webhooks slack after upload test or prod
-    * One file for all features!
+    * Connect webhooks after upload test or prod (Slack API)
+    * CHANGELOG.md generation based git history (Thymeleaf)
 
 Options
-
-  --path                        PATH to folder with project
     
-  Build:
-    --build                     Type: apk/bundle
-    --build-type                Type gradle build (release, debug or other builds type)
-    --store-password            Password store *.jks
-    --key-password              Password key *.jks
-    --store-file                Path to file *.jks
-    --upload-track              Upload type build (production/internal/alpha/beta)
-    --upload-note               Upload note text
-    --upload-note-version       Add to note versionCode
-    --version-code-up           Raising versionCode during assembly
-    --version-name-up           Raising versionName during assembly (up path version)
+  Upload:
+    --path-build                Path to build for upload
+    --upload-track              Upload type build (production/internal)
+    --note-add                  Upload note text
+    --note-add-version          Add to note versionCode (auto)
+    --user-email                Email user with oauth authentication (if use google api)
+    
+  Newsletter (with upload)
     --mailing                   Newsletter (gmail, slack) when will upload build in Google Play
+    --mailing-gmail             Newsletter only GMail
+    --mailing-slack             Newsletter only Slack
+    
+  GradleHelper
+    --path                      Path to folder with project
+    --get-application-id        Get applicationId
+    --get-version-code          Get versionCode
+    --get-version-name          Get versionName
+    --get-version-code-up       Get versionCode Up
+    --get-version-name-up       Get versionName Up
+    --version-code-up           Update versionCode - Up
+    --version-name-up           Update versionName - Up (patch)
 
   Server:
     --server                    Run server oauth. (http://localhost:8080)
     
   Changelog:
+    --path                      Path to folder with project
     --changelog                 Generate CHANGELOG.md
 
   Other:
-    --email                     Email user with oauth authentication (if use google api)
     --debug                     Enable processes logging terminal
     --version                   Show the version and exit
     --help                      Show help
@@ -56,65 +61,59 @@ Options
 ### Run server Oauth 2.0
 
 ```bash
-java -jar deployer.jar --server
+sudo crontab -e
+```
+
+```bash
+@reboot sudo -H -u {your user} bash -c "deployer --server"
+```
+
+```bash
+cat /etc/apache2/sites-enabled/oauth.com.conf
+
+<VirtualHost *:80>
+    ServerName oauth.com
+    ProxyPreserveHost on
+    RequestHeader set X-Forwarded-Proto https
+    RequestHeader set X-Forwarded-Port 443
+    ProxyPass / http://127.0.0.1:8080/
+    ProxyPassReverse / http://127.0.0.1:8080/
+</VirtualHost>
 ```
 
 ### Generate CHANGELOG.md
 
 ```bash
-java -jar deployer.jar --path=/to/porject --changelog
+deployer --path==/your/dir/project --changelog
 ```
 
-### Get versionCode UP
+### Upload
 
 ```bash
-java -jar deployer.jar --path=/to/porject --version-code-up
+deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-release.aab --upload-track=production --user-email=user@oauth.com
 ```
 
-### Get versionName UP
+### Gradle Helper
 
 ```bash
-java -jar deployer.jar --path=/to/porject --version-name-up
-```
+# Get applicationId
+deployer --path==/your/dir/project --get-application-id
 
-### Build apk
+# Get versionCode
+deployer --path==/your/dir/project --get-version-code
 
-```bash
-java -jar deployer.jar --path=/to/porject --build=apk --build-type=release --store-password=0000 --key-password=1111 --store-file=/to/porject/key.jks
-```
+# Get versionName
+deployer --path==/your/dir/project --get-version-name
 
-### Build bundle
+# Get versionCode Up
+deployer --path==/your/dir/project --get-version-code-up
 
-```bash
-java -jar deployer.jar --path=/to/porject --build=bundle --build-type=release --store-password=0000 --key-password=1111 --store-file=/to/porject/key.jks
-```
+# Get versionName Up
+deployer --path==/your/dir/project --get-version-name-up
 
-### Build with versionCode Up
+# Update versionCode - Up
+deployer --path==/your/dir/project --version-code-up
 
-```bash
-java -jar deployer.jar --path=/to/porject --build=bundle --build-type=release --store-password=0000 --key-password=1111 --store-file=/to/porject/key.jks --version-code-up
-```
-
-### Build with versionName Up (patch)
-
-```bash
-java -jar deployer.jar --path=/to/porject --build=bundle --build-type=release --store-password=0000 --key-password=1111 --store-file=/to/porject/key.jks --version-name-up
-```
-
-### Build with upload to Google Play
-
-```bash
-java -jar deployer.jar --path=/to/porject --build=bundle --build-type=release --store-password=0000 --key-password=1111 --store-file=/to/porject/key.jks --upload-track=production --email=email@oauth.user
-```
-
-### Build upload to Google Play and Newsletter
-
-```bash
-java -jar deployer.jar --path=/to/porject --build=bundle --build-type=release --store-password=0000 --key-password=1111 --store-file=/to/porject/key.jks --upload-track=production --email=email@oauth.user --mailing 
-```
-
-### Build FULL upload to Google Play
-
-```bash
-java -jar deployer.jar --path=/to/porject --build=bundle --build-type=release --store-password=0000 --key-password=1111 --store-file=/to/porject/key.jks --upload-track=production ---upload-note="My note" --upload-note-version --email=email@oauth.user --version-code-up --version-name-up --mailing
+# Update versionName - Up (patch)
+deployer --path==/your/dir/project --version-name-up
 ```

@@ -23,6 +23,8 @@ import com.keygenqt.deployer.utils.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -46,9 +48,8 @@ class RetrofitBuilder {
             builder.writeTimeout(40, TimeUnit.SECONDS)
             builder.readTimeout(40, TimeUnit.SECONDS)
 
-            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
-                builder.addInterceptor(getLoggingInterceptor())
-            }
+            builder.addInterceptor(getLoggingInterceptor())
+
             if (settings.token_type.isNotEmpty()) {
                 builder.addInterceptor { chain ->
                     val original: Request = chain.request()
@@ -66,7 +67,20 @@ class RetrofitBuilder {
         private fun getLoggingInterceptor(): HttpLoggingInterceptor {
             val interceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
                 override fun log(message: String) {
-                    println(message)
+                    if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+                        println(message)
+                    } else {
+                        try {
+                            val jsonObject = JSONObject(message.trim())
+                            if (jsonObject.has("error")) {
+                                println(jsonObject.getJSONObject("error").getString("message"))
+                            }
+                        } catch (ex: JSONException) {
+                            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+                                println(message)
+                            }
+                        }
+                    }
                 }
             })
             interceptor.apply { interceptor.level = HttpLoggingInterceptor.Level.BODY }

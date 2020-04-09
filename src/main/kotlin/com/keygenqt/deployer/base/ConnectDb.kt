@@ -52,8 +52,7 @@ class ConnectDb {
             }
 
             try {
-                connectionSource =
-                    JdbcConnectionSource("jdbc:sqlite:${PATH_APP_DB}")
+                connectionSource = JdbcConnectionSource("jdbc:sqlite:${PATH_APP_DB}")
                 for (value in models) {
                     TableUtils.createTableIfNotExists(connectionSource, value)
                 }

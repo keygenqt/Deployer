@@ -17,18 +17,17 @@
 package com.keygenqt.deployer.utils
 
 import com.keygenqt.deployer.base.ConnectDb
+import com.keygenqt.deployer.base.SnapDirs
 import kotlin.system.exitProcess
 
-const val HIDE = "."
 const val APPLICATION_NAME = "Deployer"
-const val VERSION = "0.0.6"
+const val VERSION = "0.0.37"
 const val INNER_APP_NAME = "deployer"
-const val TEMP_BUILD_FILE = ".temp_build_${INNER_APP_NAME}"
 
-val PATH_APP_TEMP_DIR = "${System.getProperty("user.home")}/${HIDE}${INNER_APP_NAME}"
-val PATH_APP_CONFIG = "${PATH_APP_TEMP_DIR}/${INNER_APP_NAME}.json"
-val PATH_APP_TEMPLATE_CL = "${PATH_APP_TEMP_DIR}/${INNER_APP_NAME}.changelog"
-val PATH_APP_DB = "${PATH_APP_TEMP_DIR}/${INNER_APP_NAME}.db"
+val PATH_APP_TEMP_DIR = SnapDirs.getEnv(SNAP_USER_COMMON)
+val PATH_APP_CONFIG = "$PATH_APP_TEMP_DIR/config.json"
+val PATH_APP_TEMPLATE_CL = "$PATH_APP_TEMP_DIR/changelog.template"
+val PATH_APP_DB = "$PATH_APP_TEMP_DIR/.cache.db"
 
 fun exit() {
     ConnectDb.close()

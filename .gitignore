@@ -5,3 +5,5 @@ gradlew.bat
 .deployer.db
 out
 *.snap
+*.snap.*
+deployer.db

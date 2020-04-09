@@ -53,7 +53,7 @@ class SingleTemplate {
             } else {
                 val content: String =
                     StreamUtils.copyToString(
-                        ClassPathResource("other/deployer.changelog").inputStream,
+                        ClassPathResource("other/changelog.template").inputStream,
                         Charset.defaultCharset()
                     )
                 getTemplateEngine(TemplateMode.TEXT).process(content, context)

@@ -1,17 +1,13 @@
 name: deployer
 base: core18
-version: '0.0.6'
+version: '0.0.37'
 summary: Deployer app deployment assistant on Google Play and a little bit more.
 description: |
-  Deployer app deployment assistant on Google Play and a little bit more.
-
-  * Web interface for generate access token Oauth 2.0.
-  * Building apk or bundle package default build types as well as custom
+  * Web interface for generate access token Oauth 2.0
   * Upload to Google Play production, internal... (Play Developer API)
-  * CHANGELOG.md generation based git history (Thymeleaf)
   * Newsletter after upload build in Google Play (Gmail API)
-  * Connect webhooks slack after upload test or prod
-  * One file for all features!
+  * Connect webhooks after upload test or prod (Slack API)
+  * CHANGELOG.md generation based git history (Thymeleaf)
 
 grade: stable
 confinement: strict
@@ -22,26 +18,29 @@ parts:
     plugin: gradle
     gradle-output-dir: build/libs
     gradle-options: [bootJar]
-    source: https://github.com/keygenqt/deployer.git
+    source: https://keygenqt_work@bitbucket.org/keygenqt_work/deployer.git
     source-type: git
     source-tag: master
     build-environment:
-      - JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
+      - JAVA_HOME: /usr/lib/jvm/java-11-openjdk-amd64
       - PATH: $JAVA_HOME/jre/bin:$PATH
 
     build-packages:
-      - openjdk-8-jdk
-      - openjdk-8-jre
+      - openjdk-11-jdk
+      - openjdk-11-jre
       - ca-certificates
       - ca-certificates-java
+
     stage-packages:
-      - openjdk-8-jre
+      - openjdk-11-jre
       - ca-certificates
       - ca-certificates-java
+      - git
 
 apps:
   deployer:
     command: java -jar $SNAP/jar/deployer.jar
-    environment:
-      JAVA_HOME: $SNAP/usr/lib/jvm/java-8-openjdk-amd64
-      PATH: $JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH
+    plugs:
+      - home
+      - network
+      - network-bind

@@ -36,42 +36,31 @@ class GooglePlayUpload {
     companion object {
 
         fun upload(
+            path: String,
             applicationId: String,
             versionCode: String,
             versionName: String,
             uploadTrack: String,
-            typeFile: String,
-            typeGradle: String,
-            email: String
+            user: ModelUser
         ) {
 
             Info.startUpload()
 
-            val pathDir = "${PARAMS[ARGS_PATH]}"
+            val build = File(path)
+            val typeFile = if (build.absolutePath.contains("bundle")) "bundles" else "apks"
 
-            if (typeFile != "apk" && typeFile != "bundle") {
-                Info.errorFileType()
-            }
+            var text =
+                if ("${PARAMS[ARGS_NOTE_ADD]}" == "false") "" else "${PARAMS[ARGS_NOTE_ADD]}".replace("<br>", "\n")
 
-            val path = when (typeFile) {
-                "apk" -> "apk/$typeGradle/app-$typeGradle.apk"
-                "bundle" -> "bundle/$typeGradle/app-$typeGradle.aab"
-                else -> ""
-            }
-
-            val build = File("$pathDir/app/build/outputs/$path")
-
-            var text = "${PARAMS[ARGS_UPLOAD_NOTE]}".replace("<br>", "\n")
-            if ("${PARAMS[ARGS_UPLOAD_NOTE_VERSION]}" == "true") {
+            if ("${PARAMS[ARGS_NOTE_ADD_VERSION]}" == "true") {
                 text = "versionCode: $versionCode\n$text"
             }
 
             if (!build.exists() || build.isDirectory) {
                 Info.notFoundFileBuild(build.absolutePath)
             } else {
-                ModelUser.findByEmail(email)?.let { user ->
-                    ModelSettings.findByUserId(user.id)?.let { settings ->
-                        OAuthService.oauthRefreshToken(settings) {
+                ModelSettings.findByUserId(user.id)?.let { settings ->
+                    OAuthService.oauthRefreshToken(settings) {
                             queryGetId(settings, applicationId) { id ->
                                 Info.getProjectIdSuccessful()
                                 queryUploadFile(settings, applicationId, typeFile, build, id) {
@@ -87,24 +76,31 @@ class GooglePlayUpload {
                                     ) {
                                         Info.updateInfoSuccessful()
 
-                                        if ("${PARAMS[ARGS_MAILING]}" == "true") {
+                                        if ("${PARAMS[ARGS_MAILING]}" == "true"
+                                            || "${PARAMS[ARGS_MAILING_GMAIL]}" == "true"
+                                            || "${PARAMS[ARGS_MAILING_SLACK]}" == "true"
+                                        ) {
                                             queryProjectInfo(settings, applicationId, id) { title ->
 
-                                                Info.sendSlackWebhook(
-                                                    title,
-                                                    applicationId,
-                                                    uploadTrack,
-                                                    versionCode,
-                                                    versionName
-                                                )
-
-                                                queryUploadCommit(settings, applicationId, id) {
-                                                    Info.commitSuccessful()
-                                                    Info.sendMailingUpload(
-                                                        settings, title, applicationId, uploadTrack,
+                                                if ("${PARAMS[ARGS_MAILING]}" == "true" || "${PARAMS[ARGS_MAILING_SLACK]}" == "true") {
+                                                    Info.sendSlackWebhook(
+                                                        title,
+                                                        applicationId,
+                                                        uploadTrack,
                                                         versionCode,
                                                         versionName
                                                     )
+                                                }
+
+                                                if ("${PARAMS[ARGS_MAILING]}" == "true" || "${PARAMS[ARGS_MAILING_GMAIL]}" == "true") {
+                                                    queryUploadCommit(settings, applicationId, id) {
+                                                        Info.commitSuccessful()
+                                                        Info.sendMailingUpload(
+                                                            settings, title, applicationId, uploadTrack,
+                                                            versionCode,
+                                                            versionName
+                                                        )
+                                                    }
                                                 }
                                             }
                                         } else {
@@ -120,9 +116,7 @@ class GooglePlayUpload {
                     } ?: run {
                         Info.settingsNotFound()
                     }
-                } ?: run {
-                    Info.userNotFound(email)
-                }
+
             }
         }
 
@@ -142,7 +136,7 @@ class GooglePlayUpload {
                     }
                     listener.invoke(params.getString("id"))
                 }, { throwable ->
-                    Info.error("ERROR (queryGetId): ${throwable.message}")
+                    Info.error("ERROR (GetId): ${throwable.message}")
                 })
         }
 
@@ -159,7 +153,7 @@ class GooglePlayUpload {
                 .googlePlayUpload(
                     applicationId = applicationId,
                     id = id,
-                    type = if (typeFile == "apk") "apks" else "bundles",
+                    type = typeFile,
                     build = build.asRequestBody("application/octet-stream".toMediaTypeOrNull())
                 )
                 .subscribe({ any ->
@@ -170,7 +164,7 @@ class GooglePlayUpload {
                     }
                     listener.invoke()
                 }, { throwable ->
-                    Info.error("ERROR (queryUploadFile): ${throwable.message}")
+                    Info.error("ERROR (UploadFile): ${throwable.message}")
                 })
         }
 
@@ -194,7 +188,7 @@ class GooglePlayUpload {
                     }
                     listener.invoke()
                 }, { throwable ->
-                    Info.error("ERROR (queryUploadCommit): ${throwable.message}")
+                    Info.error("ERROR (UploadCommit): ${throwable.message}")
                 })
         }
 
@@ -229,7 +223,7 @@ class GooglePlayUpload {
                     }
                     listener.invoke()
                 }, { throwable ->
-                    Info.error("ERROR (queryUpdateInfo): ${throwable.message}")
+                    Info.error("ERROR (UpdateInfo): ${throwable.message}")
                 })
         }
 
@@ -282,7 +276,7 @@ class GooglePlayUpload {
                     }
                     listener.invoke(params.getString("title"))
                 }, { throwable ->
-                    Info.error("ERROR (queryProjectInfo): ${throwable.message}")
+                    Info.error("ERROR (ProjectInfo): ${throwable.message}")
                 })
         }
     }

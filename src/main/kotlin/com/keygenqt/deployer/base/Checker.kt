@@ -16,7 +16,9 @@
 
 package com.keygenqt.deployer.base
 
-import com.keygenqt.deployer.utils.*
+import com.keygenqt.deployer.utils.PATH_APP_CONFIG
+import com.keygenqt.deployer.utils.PATH_APP_TEMPLATE_CL
+import com.keygenqt.deployer.utils.PATH_APP_TEMP_DIR
 import org.apache.tomcat.util.http.fileupload.FileUtils
 import org.springframework.core.io.ClassPathResource
 import org.springframework.util.StreamUtils
@@ -28,6 +30,11 @@ import java.util.regex.PatternSyntaxException
 
 class Checker {
     companion object {
+
+        fun checkUploadParams(): Boolean {
+            return true
+        }
+
         fun checkServerParams(): Boolean {
             if (Configuration.getGoogleOauthClientId().isEmpty()) {
                 return false
@@ -65,45 +72,33 @@ class Checker {
             return value
         }
 
-
-        fun terminal(value: String): String {
-            return when (value) {
-                ARGS_SERVER -> "true"
-                ARGS_CHANGELOG -> "true"
-                ARGS_BUILD -> "true"
-                ARGS_DEBUG -> "true"
-                else -> {
-
-                    println(value)
-
-                    if (!value.contains("=")) {
-                        ""
-                    } else {
-                        val arr = value.split("=")
-                        println(arr[1])
-                        arr[1]
-                    }
-                }
-            }
-        }
-
         fun tempDir() {
+
             val tempDir = File(PATH_APP_TEMP_DIR)
 
             if (!tempDir.exists()) {
                 try {
                     FileUtils.forceMkdir(tempDir)
-                    val content: String =
-                        StreamUtils.copyToString(
-                            ClassPathResource("other/deployer.json").inputStream,
-                            Charset.defaultCharset()
-                        )
-                    Files.write(Paths.get("$tempDir/deployer.json"), content.toByteArray())
                 } catch (ex: Exception) {
                     Info.errorTempDir()
                 }
             } else if (tempDir.isFile) {
                 Info.errorTempDir()
+            }
+
+            if (!File(PATH_APP_CONFIG).exists()) {
+                val content = StreamUtils.copyToString(
+                    ClassPathResource("other/config.json").inputStream,
+                    Charset.defaultCharset()
+                )
+                Files.write(Paths.get(PATH_APP_CONFIG), content.toByteArray())
+            }
+            if (!File(PATH_APP_TEMPLATE_CL).exists()) {
+                val content = StreamUtils.copyToString(
+                    ClassPathResource("other/changelog.template").inputStream,
+                    Charset.defaultCharset()
+                )
+                Files.write(Paths.get(PATH_APP_TEMPLATE_CL), content.toByteArray())
             }
         }
     }

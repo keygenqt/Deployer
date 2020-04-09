@@ -82,8 +82,8 @@ class GmailService(
         service?.let {
             OAuthService.oauthRefreshToken(settings) {
                 ModelUser.findById(userId ?: "0")?.let {
-                    var message: Message = createMessageWithEmail(createEmail(to, it.email, subject, bodyText))
-                    message = service.users().messages().send(userId, message).execute()
+                    val message: Message = createMessageWithEmail(createEmail(to, it.email, subject, bodyText))
+                    service.users().messages().send(userId, message).execute()
                     println("Message sent success: $to")
                 }
             }

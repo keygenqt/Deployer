@@ -39,6 +39,11 @@ class Info {
             exit()
         }
 
+        fun errorGetApplicationId() {
+            println(ERROR_GET_APPLICATION_ID)
+            exit()
+        }
+
         fun errorGetVersionCode() {
             println(ERROR_GET_VERSION_CODE)
             exit()
@@ -46,6 +51,16 @@ class Info {
 
         fun errorGetVersionName() {
             println(ERROR_GET_VERSION_NAME)
+            exit()
+        }
+
+        fun errorUpVersionCode() {
+            println(ERROR_UP_VERSION_CODE)
+            exit()
+        }
+
+        fun errorUpVersionName() {
+            println(ERROR_UP_VERSION_NAME)
             exit()
         }
 
@@ -88,6 +103,11 @@ class Info {
             exit()
         }
 
+        fun selectUser() {
+            println(SELECT_USER)
+            exit()
+        }
+
         fun userNotFound(email: String) {
             println(NOT_FOUND_USER.replace("{email}", email))
             exit()
@@ -95,31 +115,6 @@ class Info {
 
         fun notFoundFileBuild(path: String) {
             println(NOT_FOUND_FILE_BUILD.replace("{path}", path))
-            exit()
-        }
-
-        fun errorFileType() {
-            println(ERROR_FILE_TYPE)
-            exit()
-        }
-
-        fun buildRequired() {
-            println(ERROR_BUILD_REQUIRED_BEFORE_PUSH)
-            exit()
-        }
-
-        fun errorVersionCodeUp() {
-            println(ERROR_VERSION_CODE_UP)
-            exit()
-        }
-
-        fun errorVersionNameUp() {
-            println(ERROR_VERSION_NAME_UP)
-            exit()
-        }
-
-        fun notFoundGradlew(path: String) {
-            println(BUILD_NOT_FOUND_GRADLEW.replace("{path}", path))
             exit()
         }
 

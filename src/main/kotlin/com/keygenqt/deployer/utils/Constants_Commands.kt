@@ -22,9 +22,3 @@ const val CMD_GET_TAG_DATE = "git log -1 --format=%at {tag}"
 const val CMD_FIND_CHANGE =
     "git log --grep='{grep}' -i -E --format=[\\`\\`\\`]%H\\`\\`\\`%n%B\\`\\`\\`%ae\\`\\`\\`%aN\\`\\`\\`%at {from}..{to}"
 const val CMD_GET_FIRST_HASH = "git rev-list --max-parents=0 HEAD"
-
-const val CMD_BUILD_PERMISSION = "chmod +x ./gradlew"
-const val CMD_BUILD_CLEAN = "./gradlew clean > /dev/null"
-const val CMD_BUILD = "./gradlew --console=plain --no-build-cache {assemble} > $TEMP_BUILD_FILE"
-const val CMD_BUILD_KEY =
-    "./gradlew --console=plain --no-build-cache {assemble} -Pandroid.injected.signing.store.password={storePass} -Pandroid.injected.signing.key.password={keyPass} -Pandroid.injected.signing.store.file={storeFile} -Pandroid.injected.signing.key.alias={alias} > $TEMP_BUILD_FILE"
