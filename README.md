@@ -118,6 +118,8 @@ cat /etc/apache2/sites-enabled/oauth.com.conf
 deployer --path==/your/dir/project --changelog
 ```
 
+[Deployer CHANGELOG.md](../master/CHANGELOG.md)
+
 ### Upload
 
 ```bash
