@@ -1,19 +1,23 @@
 
 
-## Updated: 11/04/20 12:10 AM
+## Updated: 11/04/20 12:14 AM
 
 ## Info
 
-- Last tag: 0.0.38
-- Released: 0
+- Last tag: 0.1.0
+- Released: 1
 
 
+## Versions
+   
+- [Version: 0.1.0 (11/04/20 12:13 AM)](#version-010-110420-1213-am)     
 
-     
 
-
-## Version: not released 
+## Version: 0.1.0 (11/04/20 12:13 AM) 
 
 ### Added
 * [Feature] Add CHANGELOG.md (Vitaliy Zarubin)
+
+### Changed
+* [Change] fix version 0.1.0 (Vitaliy Zarubin)
 
