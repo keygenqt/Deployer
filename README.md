@@ -151,8 +151,8 @@ deployer --path==/your/dir/project --version-name-up
 
 #### Example scripts for configure server:
 
-[Base script](../blob/master/server/run.sh)
+[Base script](../master/server/run.sh)
 
-[Generate commits](../blob/master/server/run.sh)
+[Generate commits](../master/server/run.sh)
 
-[Lock](../blob/master/server/run.sh)
+[Lock](../master/server/run.sh)
