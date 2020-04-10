@@ -7,8 +7,37 @@ Deployer
 
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/deployer)
 
-#### Info:
+### Info:
 
+#### Configure application:
+
+path: $HOME/snap/deployer/common/config.json
+
+```json
+{
+  "Google OAuth Client ID": "This your google project client id",
+  "Google OAuth Client Secret": "This your google project client secret",
+  "Google OAuth Redirect Uri": "https://yourdomain.com",
+  "Email send prod": ["email@one.com", "email@second"],
+  "Email send test": ["email@one.com", "email@second"],
+  "Slack Webhook URL send prod": ["webhook to app slack 1", "webhook to app slack 2"],
+  "Slack Webhook URL send test": ["webhook to app slack 3", "webhook to app slack 4"],
+  "Slack Webhook Users": {
+    "user@oaut.com": "slack user id",
+    "user2@oaut.com": "slack user id 2"
+  },
+  "Changelog Date Format": "dd/MM/yy hh:mm a",
+  "Changelog Date Format Generate": "dd/MM/yy hh:mm a",
+  "Changelog Types Log Grep": "\\[Feature\\]|\\[Bug\\]|\\[Change\\]",
+  "Changelog Order Types": [
+    "[Feature]",
+    "[Change]",
+    "[Bug]"
+  ]
+}
+```
+
+#### Command line:
 ```
 Usage: deployer COMMAND=ARG...
 
@@ -59,6 +88,8 @@ Options
 ## Usage
 
 ### Run server Oauth 2.0
+
+![picture](https://bitbucket.org/keygenqt_work/deployer/raw/48301ae69416cb90f49a6d34871da8aabecc56dd/data/server-preview.png)
 
 ```bash
 sudo crontab -e
@@ -117,3 +148,11 @@ deployer --path==/your/dir/project --version-code-up
 # Update versionName - Up (patch)
 deployer --path==/your/dir/project --version-name-up
 ```
+
+#### Example scripts for configure server:
+
+[Base script](../blob/master/server/run.sh)
+
+[Generate commits](../blob/master/server/run.sh)
+
+[Lock](../blob/master/server/run.sh)

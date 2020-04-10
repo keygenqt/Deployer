@@ -1,0 +1,18 @@
+{
+  "Google OAuth Client ID": "",
+  "Google OAuth Client Secret": "",
+  "Google OAuth Redirect Uri": "",
+  "Email send prod": [],
+  "Email send test": [],
+  "Slack Webhook URL send prod": [],
+  "Slack Webhook URL send test": [],
+  "Slack Webhook Users": {},
+  "Changelog Date Format": "dd/MM/yy hh:mm a",
+  "Changelog Date Format Generate": "dd/MM/yy hh:mm a",
+  "Changelog Types Log Grep": "\\[Feature\\]|\\[Bug\\]|\\[Change\\]",
+  "Changelog Order Types": [
+    "[Feature]",
+    "[Change]",
+    "[Bug]"
+  ]
+}
