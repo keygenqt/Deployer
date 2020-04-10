@@ -1,6 +1,6 @@
 
 
-## Updated: 11/04/20 12:01 AM
+## Updated: 11/04/20 12:02 AM
 
 ## Info
 
@@ -15,5 +15,5 @@
 ## Version: not released 
 
 ### Added
-* [Feature] Add CHANGELOG.md [Feature]  (Vitaliy Zarubin)
+* [Feature] Add CHANGELOG.md (Vitaliy Zarubin)
 
