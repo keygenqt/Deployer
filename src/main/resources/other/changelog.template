@@ -9,7 +9,7 @@
 ## Info
 
 [# th:if="!${tags_map.empty}"]- Last tag: [(${tags_last})][/]
-- Count tag: [(${tags_count_changes})]
+- Released: [(${tags_count_changes})]
 
 [# th:if="!${tags_map.empty}"]
 [# th:if="${tags_count_changes} != 0"]## Versions[/]
