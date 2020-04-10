@@ -9,6 +9,12 @@ Deployer
 
 ### Info:
 
+* Web interface for generate access token Oauth
+* Upload to Google Play production, internal... (Play Developer API)
+* Newsletter after upload build in Google Play (Gmail API)
+* Connect webhooks after upload test or prod (Slack API)
+* CHANGELOG.md generation based git history (Thymeleaf)
+
 #### Configure application:
 
 path: $HOME/snap/deployer/common/config.json
