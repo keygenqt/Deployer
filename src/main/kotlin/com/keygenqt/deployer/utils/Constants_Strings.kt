@@ -37,6 +37,7 @@ Options
     --mailing                   Newsletter (gmail, slack) when will upload build in Google Play
     --mailing-gmail             Newsletter only GMail
     --mailing-slack             Newsletter only Slack
+    --mailing-slack-desc        Slack additional Information
     
   GradleHelper
     --path                      Path to folder with project
@@ -49,6 +50,7 @@ Options
     --version-name-up           Update versionName - Up (patch)
 
   Server:
+    --path                      Path to folder with project
     --server                    Run server oauth. (http://localhost:8080)
     
   Changelog:

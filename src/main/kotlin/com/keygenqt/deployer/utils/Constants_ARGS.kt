@@ -35,6 +35,7 @@ const val ARGS_VERSION_NAME_UP = "--version-name-up"
 const val ARGS_MAILING = "--mailing"
 const val ARGS_MAILING_GMAIL = "--mailing-gmail"
 const val ARGS_MAILING_SLACK = "--mailing-slack"
+const val ARGS_MAILING_SLACK_DESC = "--mailing-slack-desc"
 
 const val ARGS_SERVER = "--server"
 

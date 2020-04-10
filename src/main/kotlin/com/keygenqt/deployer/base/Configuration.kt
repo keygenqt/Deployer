@@ -34,6 +34,7 @@ class Configuration {
         private var EMAIL_SEND_TEST = "Email send test"
         private var SLACK_WEBHOOK_URL_SEND_PROD = "Slack Webhook URL send prod"
         private var SLACK_WEBHOOK_URL_SEND_TEST = "Slack Webhook URL send test"
+        private var SLACK_WEBHOOK_USERS = "Slack Webhook Users"
         private var CHANGELOG_DATE_FORMAT = "Changelog Date Format"
         private var CHANGELOG_DATE_FORMAT_GENERATE = "Changelog Date Format Generate"
         private var CHANGELOG_TYPES_LOG_GREP = "Changelog Types Log Grep"
@@ -51,6 +52,7 @@ class Configuration {
 
             SLACK_WEBHOOK_URL_SEND_PROD to "[]",
             SLACK_WEBHOOK_URL_SEND_TEST to "[]",
+            SLACK_WEBHOOK_USERS to "{}",
 
             CHANGELOG_DATE_FORMAT to "dd/MM/yy hh:mm a",
             CHANGELOG_DATE_FORMAT_GENERATE to "dd/MM/yy hh:mm a",
@@ -177,6 +179,19 @@ class Configuration {
             } catch (ex: Exception) {
             }
             return result
+        }
+
+        fun getSlackUser(email: String): String {
+            val value = checkParam(SLACK_WEBHOOK_USERS)
+            try {
+                val emails = JSONObject(value)
+                if (emails.has(email)) {
+                    return emails.getString(email)
+                }
+            } catch (ex: Exception) {
+                return ""
+            }
+            return ""
         }
 
         fun getGoogleOauthRedirectUri(): String {

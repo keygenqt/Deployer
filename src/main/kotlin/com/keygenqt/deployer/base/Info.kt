@@ -180,11 +180,14 @@ class Info {
             applicationId: String,
             uploadTrack: String,
             versionCode: String,
-            versionName: String
+            versionName: String,
+            description: String,
+            userEmail: String
         ) {
 
             val listUrl =
                 if (uploadTrack == "production") Configuration.getSlackWebhookSendProd() else Configuration.getSlackWebhookSendTest()
+            val userId = Configuration.getSlackUser(userEmail)
             for (url in listUrl) {
 
                 val json = JSONObject()
@@ -198,6 +201,8 @@ class Info {
 
 ```versionCode: $versionCode
 versionName "$versionName"```
+${if (description.isNotEmpty()) "\n```$description```\n" else ""}
+${if (userId.isNotEmpty()) "\nUploaded the build <@$userId>\n" else ""}
 """
                 )
                 block.put("type", "section")

@@ -50,6 +50,7 @@ val PARAMS = hashMapOf(
     ARGS_MAILING to "false",
     ARGS_MAILING_GMAIL to "false",
     ARGS_MAILING_SLACK to "false",
+    ARGS_MAILING_SLACK_DESC to "false",
 
     ARGS_SERVER to "false",
     ARGS_CHANGELOG to "false",
@@ -105,6 +106,9 @@ fun main(args: Array<String>) {
                     }
                     item.contains("^$ARGS_USER_EMAIL\\=.+".toRegex()) -> {
                         PARAMS[ARGS_USER_EMAIL] = item.replace("$ARGS_USER_EMAIL=", "")
+                    }
+                    item.contains("^$ARGS_MAILING_SLACK_DESC\\=.+".toRegex()) -> {
+                        PARAMS[ARGS_MAILING_SLACK_DESC] = item.replace("$ARGS_MAILING_SLACK_DESC=", "")
                     }
                 }
             }

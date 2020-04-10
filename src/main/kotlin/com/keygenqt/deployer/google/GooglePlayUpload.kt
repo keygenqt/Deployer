@@ -88,7 +88,9 @@ class GooglePlayUpload {
                                                         applicationId,
                                                         uploadTrack,
                                                         versionCode,
-                                                        versionName
+                                                        versionName,
+                                                        "${PARAMS[ARGS_MAILING_SLACK_DESC]}",
+                                                        user.email
                                                     )
                                                 }
 
