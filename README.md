@@ -128,8 +128,25 @@ deployer --path==/your/dir/project --changelog
 
 ### Upload
 
+#### Send
 ```bash
 deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-release.aab --upload-track=production --user-email=user@oauth.com
+```
+
+#### Send + Slack API
+
+![picture](https://bitbucket.org/keygenqt_work/deployer/raw/92b4fbbefb33bd6bc0489246ddfe927837f4481f/data/slack-preview.png)
+
+```bash
+deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-release.aab --upload-track=production --user-email=user@oauth.com --mailing-slack
+```
+
+#### Send + GMail API
+
+![picture](https://bitbucket.org/keygenqt_work/deployer/raw/92b4fbbefb33bd6bc0489246ddfe927837f4481f/data/gmail-preview.png)
+
+```bash
+deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-release.aab --upload-track=production --user-email=user@oauth.com --mailing-gmail
 ```
 
 ### Gradle Helper
