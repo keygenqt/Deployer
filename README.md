@@ -153,6 +153,6 @@ deployer --path==/your/dir/project --version-name-up
 
 [Base script](../master/server/run.sh)
 
-[Generate commits](../master/server/run.sh)
+[Generate commits](../master/server/internal_commits.sh)
 
-[Lock](../master/server/run.sh)
+[Lock](../master/server/lock.sh)
