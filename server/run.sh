@@ -66,7 +66,7 @@ case "$TYPE" in
   ## commmit changes
   git add . >/dev/null && git commit -m "server - up name" >/dev/null && git push --quiet >/dev/null
 
-  echo "-> ADD NEWS TAG SUCCESSFULY ($newTag)"
+  echo "-> ADD NEW TAG SUCCESSFULY ($newTag)"
   /scripts/server/lock.sh
   ;;
 --production)
