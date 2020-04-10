@@ -135,7 +135,7 @@ deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-rel
 
 #### Send + Slack API
 
-![picture](https://bitbucket.org/keygenqt_work/deployer/raw/92b4fbbefb33bd6bc0489246ddfe927837f4481f/data/slack-preview.png)
+![picture](https://bitbucket.org/keygenqt_work/deployer/raw/01120c3cd3183e9aeaee19f8708164153bde5207/data/slack-preview.png)
 
 ```bash
 deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-release.aab --upload-track=production --user-email=user@oauth.com --mailing-slack
