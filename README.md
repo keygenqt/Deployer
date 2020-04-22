@@ -78,7 +78,6 @@ Options
     --version-name-up           Update versionName - Up (patch)
 
   Server:
-    --path                      Path to folder with project
     --server                    Run server oauth. (http://localhost:8080)
     
   Changelog:
