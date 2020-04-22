@@ -1,6 +1,6 @@
 
 
-## Updated: 22/04/20 07:39 PM
+## Updated: 22/04/20 07:41 PM
 
 ## Info
 
@@ -13,6 +13,11 @@
 - [Version: 0.1.3 (22/04/20 07:36 PM)](#version-013-220420-0736-pm)   
 - [Version: 0.1.0 (11/04/20 12:13 AM)](#version-010-110420-1213-am)     
 
+
+## Version: not released 
+
+### Changed
+* [Change] Update description [Change]  (Vitaliy Zarubin) [GitLab](26c5d942e8e167d56762e955eeec9f5b9980f2d1) [YouTrack](https://youtrack.pinxterapp.com/issue/[Change] Update description)
 
 ## Version: 0.1.3 (22/04/20 07:36 PM) 
 
