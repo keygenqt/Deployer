@@ -39,6 +39,11 @@ class Info {
             exit()
         }
 
+        fun errorPath() {
+            println(ERROR_PATH_REQUIRED)
+            exit()
+        }
+
         fun errorGetApplicationId() {
             println(ERROR_GET_APPLICATION_ID)
             exit()

@@ -57,6 +57,7 @@ Deployer is a tool for:
 Options
     
   Upload:
+    --path                      Path to folder with project
     --path-build                Path to build for upload
     --upload-track              Upload type build (production/internal)
     --note-add                  Upload note text
@@ -76,13 +77,13 @@ Options
     --get-version-name-up       Get versionName Up
     --version-code-up           Update versionCode - Up
     --version-name-up           Update versionName - Up (patch)
-
-  Server:
-    --server                    Run server oauth. (http://localhost:8080)
     
   Changelog:
     --path                      Path to folder with project
     --changelog                 Generate CHANGELOG.md
+
+  Server:
+    --server                    Run server oauth. (http://localhost:8080)
 
   Other:
     --debug                     Enable processes logging terminal

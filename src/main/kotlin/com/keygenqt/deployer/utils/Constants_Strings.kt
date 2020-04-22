@@ -29,6 +29,7 @@ Deployer is a tool for:
 Options
     
   Upload:
+    --path                      Path to folder with project
     --path-build                Path to build for upload
     --upload-track              Upload type build (production/internal)
     --note-add                  Upload note text
@@ -48,13 +49,13 @@ Options
     --get-version-name-up       Get versionName Up
     --version-code-up           Update versionCode - Up
     --version-name-up           Update versionName - Up (patch)
-
-  Server:
-    --server                    Run server oauth. (http://localhost:8080)
     
   Changelog:
     --path                      Path to folder with project
     --changelog                 Generate CHANGELOG.md
+
+  Server:
+    --server                    Run server oauth. (http://localhost:8080)
 
   Other:
     --debug                     Enable processes logging terminal
@@ -82,6 +83,7 @@ const val ERROR_GET_VERSION_CODE = "Error get versionCode"
 const val ERROR_GET_VERSION_NAME = "Error get versionName"
 const val ERROR_UP_VERSION_CODE = "Error Up versionCode"
 const val ERROR_UP_VERSION_NAME = "Error Up versionName"
+const val ERROR_PATH_REQUIRED = "--path={path to folder with project required}"
 
 val SET_REQUIRED_PARAMS = "Check required params for OAuth: $PATH_APP_TEMP_DIR/config.json"
 val ERROR_TEMP_DIR = "I can't create temp dir $PATH_APP_TEMP_DIR"

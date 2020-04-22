@@ -16,6 +16,7 @@
 
 package com.keygenqt.deployer.components
 
+import com.keygenqt.deployer.base.Info
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -24,6 +25,9 @@ class Upper {
     companion object {
 
         fun getApplicationId(path: String): String? {
+            if (path.isEmpty()) {
+                Info.errorPath()
+            }
             val string = String(Files.readAllBytes(File("$path/app/build.gradle").toPath()))
             var res = string.replace("\n", "").replace(""".*applicationId\s"([A-z.]+)".*""".toRegex(), "$1")
             if (res.contains("applicationId")) {
