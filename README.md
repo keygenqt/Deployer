@@ -67,8 +67,15 @@ Options
     --mailing-gmail             Newsletter only GMail
     --mailing-slack             Newsletter only Slack
     --mailing-slack-desc        Slack additional Information
+
+  Sending in Slack
+    --path                      Path to folder with project
+    --mailing-slack             Newsletter only Slack
+    --mailing-slack-desc        Slack additional Information
+    --user-email                Email user form config for Slack "Slack Webhook Users"
+    --upload-track              Upload type build (production/internal)
     
-  GradleHelper
+  FileHelper
     --path                      Path to folder with project
     --get-application-id        Get applicationId
     --get-version-code          Get versionCode
@@ -149,11 +156,19 @@ deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-rel
 deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-release.aab --upload-track=production --user-email=user@oauth.com --mailing-gmail
 ```
 
-### Gradle Helper
+#### Just send slack info
+```bash
+deployer --path=/your/dir/project --upload-track=internal --mailing-slack --mailing-slack-desc="test" --user-email=user@email.com
+```
+
+### File Helper
 
 ```bash
 # Get applicationId
 deployer --path==/your/dir/project --get-application-id
+
+# Get applicationId
+deployer --path==/your/dir/project --get-application-name
 
 # Get versionCode
 deployer --path==/your/dir/project --get-version-code

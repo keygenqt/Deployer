@@ -22,6 +22,7 @@ import com.keygenqt.deployer.PARAMS
 import com.keygenqt.deployer.base.Info
 import com.keygenqt.deployer.base.retrofit.RetrofitBuilder
 import com.keygenqt.deployer.base.retrofit.RetrofitQuery
+import com.keygenqt.deployer.components.HelperFile
 import com.keygenqt.deployer.models.ModelSettings
 import com.keygenqt.deployer.models.ModelUser
 import com.keygenqt.deployer.utils.*
@@ -82,9 +83,13 @@ class GooglePlayUpload {
                                         ) {
                                             queryProjectInfo(settings, applicationId, id) { title ->
 
+                                                // title - google play app name
+                                                // title2 - devise app name
+                                                var title2 = HelperFile.findAppName(path)
+
                                                 if ("${PARAMS[ARGS_MAILING]}" == "true" || "${PARAMS[ARGS_MAILING_SLACK]}" == "true") {
                                                     Info.sendSlackWebhook(
-                                                        title,
+                                                        title2,
                                                         applicationId,
                                                         uploadTrack,
                                                         versionCode,
@@ -98,7 +103,7 @@ class GooglePlayUpload {
                                                     queryUploadCommit(settings, applicationId, id) {
                                                         Info.commitSuccessful()
                                                         Info.sendMailingUpload(
-                                                            settings, title, applicationId, uploadTrack,
+                                                            settings, title2, applicationId, uploadTrack,
                                                             versionCode,
                                                             versionName
                                                         )

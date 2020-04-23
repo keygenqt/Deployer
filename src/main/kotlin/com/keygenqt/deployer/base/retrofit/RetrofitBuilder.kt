@@ -16,6 +16,7 @@
 
 package com.keygenqt.deployer.base.retrofit
 
+import com.google.gson.GsonBuilder
 import com.keygenqt.deployer.PARAMS
 import com.keygenqt.deployer.models.ModelSettings
 import com.keygenqt.deployer.utils.ARGS_DEBUG
@@ -30,6 +31,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+
 class RetrofitBuilder {
     companion object {
 
@@ -37,7 +39,7 @@ class RetrofitBuilder {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(getClient(settings))
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build()
         }
 

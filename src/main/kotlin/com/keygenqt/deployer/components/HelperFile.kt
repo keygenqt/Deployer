@@ -21,52 +21,75 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
-class Upper {
+class HelperFile {
     companion object {
 
-        fun getApplicationId(path: String): String? {
+        fun findAppName(path: String): String {
+            if (path.isEmpty()) {
+                Info.errorPath()
+            }
+            val manifest = String(Files.readAllBytes(File("$path/app/src/main/AndroidManifest.xml").toPath()))
+            val strings = String(Files.readAllBytes(File("$path/app/src/main/res/strings/values/strings.xml").toPath()))
+            val appNameKey = manifest.replace("\r\n", "").replace("\n", "")
+                .replace(""".*android\:label\=\"\@string\/([A-z_]+)".*""".toRegex(), "$1")
+            val appName = strings.replace("\r\n", "").replace("\n", "").replace(
+                """.*\<string\sname\=\"$appNameKey\"\>([A-z_\-\s\!\@\#\$\%\^\&\*\(\)]+)\<\/string\>.*""".toRegex(),
+                "$1"
+            )
+            if (appName.contains("</string")) {
+                return ""
+            }
+            return appName
+        }
+
+        fun getApplicationId(path: String): String {
             if (path.isEmpty()) {
                 Info.errorPath()
             }
             val string = String(Files.readAllBytes(File("$path/app/build.gradle").toPath()))
-            var res = string.replace("\n", "").replace(""".*applicationId\s"([A-z.]+)".*""".toRegex(), "$1")
+            var res = string.replace("\r\n", "").replace("\n", "")
+                .replace(""".*applicationId\s"([A-z.]+)".*""".toRegex(), "$1")
             if (res.contains("applicationId")) {
-                res = string.replace("\n", "").replace(""".*applicationId\s'([A-z.]+)'.*""".toRegex(), "$1")
+                res = string.replace("\r\n", "").replace("\n", "")
+                    .replace(""".*applicationId\s'([A-z.]+)'.*""".toRegex(), "$1")
             }
             if (res.contains("applicationId")) {
-                return null
+                Info.errorGetApplicationId()
             }
             return res
         }
 
-        fun getVersionCode(path: String): Int? {
+        fun getVersionCode(path: String): Int {
             val string = String(Files.readAllBytes(File("$path/app/build.gradle").toPath()))
-            return string.replace("\n", "").replace(".*versionCode\\s(\\d+).*".toRegex(), "$1").toIntOrNull()
+            val id = string.replace("\r\n", "").replace("\n", "").replace(".*versionCode\\s(\\d+).*".toRegex(), "$1")
+                .toIntOrNull()
+            if (id == null) {
+                Info.errorGetVersionCode()
+            }
+            return id ?: 0
         }
 
-        fun getVersionName(path: String): String? {
+        fun getVersionName(path: String): String {
             val string = String(Files.readAllBytes(File("$path/app/build.gradle").toPath()))
-            var res = string.replace("\n", "").replace(""".*versionName\s"([\dA-z.\-:]+)".*""".toRegex(), "$1")
+            var res = string.replace("\r\n", "").replace("\n", "")
+                .replace(""".*versionName\s"([\dA-z.\-:]+)".*""".toRegex(), "$1")
             if (res.contains("versionName")) {
-                res = string.replace("\n", "").replace(""".*versionName\s'([\dA-z.\-:]+)'.*""".toRegex(), "$1")
+                res = string.replace("\r\n", "").replace("\n", "")
+                    .replace(""".*versionName\s'([\dA-z.\-:]+)'.*""".toRegex(), "$1")
             }
             if (res.contains("versionName")) {
-                return null
+                Info.errorGetVersionName()
             }
             return res
         }
 
-        fun getVersionCodeUp(path: String): String? {
+        fun getVersionCodeUp(path: String): String {
             val code = getVersionCode(path)
-            code?.let {
-                return "${code + 1}"
-            } ?: run {
-                return null
-            }
+            return "${code + 1}"
         }
 
         fun getVersionNameUp(path: String): String? {
-            getVersionName(path)?.let {
+            getVersionName(path).let {
                 if (it.isNotEmpty() && it.contains(".")) {
                     return try {
                         val update = it.split(".").toMutableList()
@@ -89,14 +112,10 @@ class Upper {
         fun versionCodeUp(path: String): String? {
             val code1 = getVersionCode(path)
             val code2 = getVersionCodeUp(path)
-            code2?.let {
-                var string = String(Files.readAllBytes(File("$path/app/build.gradle").toPath()))
-                string = string.replace("versionCode $code1", "versionCode $code2")
-                Files.write(Paths.get("$path/app/build.gradle"), string.toByteArray())
-                return code2
-            } ?: run {
-                return null
-            }
+            var string = String(Files.readAllBytes(File("$path/app/build.gradle").toPath()))
+            string = string.replace("versionCode $code1", "versionCode $code2")
+            Files.write(Paths.get("$path/app/build.gradle"), string.toByteArray())
+            return code2
         }
 
         fun versionNameUp(path: String): String? {

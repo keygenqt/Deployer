@@ -24,6 +24,7 @@ const val ARGS_NOTE_ADD = "--note-add"
 const val ARGS_NOTE_ADD_VERSION = "--note-add-version"
 const val ARGS_USER_EMAIL = "--user-email"
 
+const val ARGS_APPLICATION_NAME = "--get-application-name"
 const val ARGS_APPLICATION_ID = "--get-application-id"
 const val ARGS_GET_VERSION_CODE = "--get-version-code"
 const val ARGS_GET_VERSION_NAME = "--get-version-name"

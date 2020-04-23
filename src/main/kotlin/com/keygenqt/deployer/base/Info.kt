@@ -146,6 +146,11 @@ class Info {
             exit()
         }
 
+        fun trackRequired() {
+            println("$ARGS_UPLOAD_TRACK={required}")
+            exit()
+        }
+
         fun sendMailingUpload(
             settings: ModelSettings,
             projectName: String,
@@ -202,12 +207,13 @@ class Info {
                 text.put("type", "mrkdwn")
                 text.put(
                     "text", """
-<https://play.google.com/store/apps/details?id=$applicationId|$projectName>  Google Play *"Pending publication"*
+<https://play.google.com/store/apps/details?id=$applicationId|$projectName>  Google Play
 
 ```versionCode: $versionCode
 versionName "$versionName"```
-${if (description.isNotEmpty()) "\n```$description```\n" else ""}
+${if (description != "false" && description.isNotEmpty()) "\n```$description```\n" else ""}
 ${if (userId.isNotEmpty()) "\nUploaded the build <@$userId>\n" else ""}
+
 """
                 )
                 block.put("type", "section")
@@ -221,7 +227,13 @@ ${if (userId.isNotEmpty()) "\nUploaded the build <@$userId>\n" else ""}
                         url,
                         json.toString().toRequestBody("application/json".toMediaTypeOrNull())
                     )
-                    .subscribe({}, {})
+                    .subscribe({
+                        println("Success send slack")
+                    }, { t ->
+                        println("Error send slack")
+                        println(t)
+                        exit()
+                    })
             }
         }
 

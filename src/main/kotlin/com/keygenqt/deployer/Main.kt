@@ -20,7 +20,7 @@ import com.keygenqt.deployer.base.Checker
 import com.keygenqt.deployer.base.ConnectDb
 import com.keygenqt.deployer.base.Info
 import com.keygenqt.deployer.components.Changelog
-import com.keygenqt.deployer.components.Upper
+import com.keygenqt.deployer.components.HelperFile
 import com.keygenqt.deployer.google.GooglePlayUpload
 import com.keygenqt.deployer.models.ModelUser
 import com.keygenqt.deployer.utils.*
@@ -76,6 +76,7 @@ fun main(args: Array<String>) {
         when (item) {
             ARGS_SERVER -> PARAMS[ARGS_SERVER] = "true"
             ARGS_NOTE_ADD_VERSION -> PARAMS[ARGS_NOTE_ADD_VERSION] = "true"
+            ARGS_APPLICATION_NAME -> PARAMS[ARGS_APPLICATION_NAME] = "true"
             ARGS_APPLICATION_ID -> PARAMS[ARGS_APPLICATION_ID] = "true"
             ARGS_GET_VERSION_CODE -> PARAMS[ARGS_GET_VERSION_CODE] = "true"
             ARGS_GET_VERSION_NAME -> PARAMS[ARGS_GET_VERSION_NAME] = "true"
@@ -138,71 +139,43 @@ fun main(args: Array<String>) {
         PARAMS[ARGS_CHANGELOG] == "true" -> {
             Changelog.generate("${PARAMS[ARGS_PATH]}")
         }
-        PARAMS[ARGS_APPLICATION_ID] == "true" -> {
-            Upper.getApplicationId("${PARAMS[ARGS_PATH]}")?.let {
-                print(it)
-            } ?: run {
-                Info.errorGetApplicationId()
-            }
-        }
-        PARAMS[ARGS_GET_VERSION_CODE] == "true" -> {
-            Upper.getVersionCode("${PARAMS[ARGS_PATH]}")?.let {
-                print(it)
-            } ?: run {
-                Info.errorGetVersionCode()
-            }
-        }
-        PARAMS[ARGS_GET_VERSION_NAME] == "true" -> {
-            Upper.getVersionName("${PARAMS[ARGS_PATH]}")?.let {
-                print(it)
-            } ?: run {
-                Info.errorGetVersionName()
-            }
-        }
+        PARAMS[ARGS_APPLICATION_NAME] == "true" -> print(HelperFile.findAppName("${PARAMS[ARGS_PATH]}"))
+        PARAMS[ARGS_APPLICATION_ID] == "true" -> print(HelperFile.getApplicationId("${PARAMS[ARGS_PATH]}"))
+        PARAMS[ARGS_GET_VERSION_CODE] == "true" -> print(HelperFile.getVersionCode("${PARAMS[ARGS_PATH]}"))
+        PARAMS[ARGS_GET_VERSION_NAME] == "true" -> HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
+        PARAMS[ARGS_GET_VERSION_CODE_UP] == "true" -> print(HelperFile.getVersionCodeUp("${PARAMS[ARGS_PATH]}"))
         PARAMS[ARGS_VERSION_CODE_UP] == "true" -> {
-            Upper.versionCodeUp("${PARAMS[ARGS_PATH]}")?.let {
+            HelperFile.versionCodeUp("${PARAMS[ARGS_PATH]}")?.let {
                 print(it)
             } ?: run {
                 Info.errorUpVersionCode()
             }
         }
         PARAMS[ARGS_VERSION_NAME_UP] == "true" -> {
-            Upper.versionNameUp("${PARAMS[ARGS_PATH]}")?.let {
+            HelperFile.versionNameUp("${PARAMS[ARGS_PATH]}")?.let {
                 print(it)
             } ?: run {
                 Info.errorUpVersionName()
-            }
-        }
-        PARAMS[ARGS_GET_VERSION_CODE_UP] == "true" -> {
-            Upper.getVersionCodeUp("${PARAMS[ARGS_PATH]}")?.let {
-                print(it)
-            } ?: run {
-                Info.errorUpVersionCode()
             }
         }
         PARAMS[ARGS_GET_VERSION_NAME_UP] == "true" -> {
-            Upper.getVersionNameUp("${PARAMS[ARGS_PATH]}")?.let {
+            HelperFile.getVersionNameUp("${PARAMS[ARGS_PATH]}")?.let {
                 print(it)
             } ?: run {
                 Info.errorUpVersionName()
             }
         }
-        PARAMS[ARGS_UPLOAD_TRACK] != "false" -> {
-            val applicationId = Upper.getApplicationId("${PARAMS[ARGS_PATH]}")
-            if (applicationId == null) {
-                Info.errorGetApplicationId()
-            }
-            val versionCode = Upper.getVersionCode("${PARAMS[ARGS_PATH]}")
-            if (versionCode == null) {
-                Info.errorGetVersionCode()
-            }
-            val versionName = Upper.getVersionName("${PARAMS[ARGS_PATH]}")
-            if (versionName == null) {
-                Info.errorGetVersionName()
+        PARAMS[ARGS_PATH_BUILD] != "false" -> {
+            if ("${PARAMS[ARGS_UPLOAD_TRACK]}" == "false") {
+                Info.trackRequired()
             }
             if ("${PARAMS[ARGS_USER_EMAIL]}" == "false") {
                 Info.selectUser()
             }
+            val applicationId = HelperFile.getApplicationId("${PARAMS[ARGS_PATH]}")
+            val versionCode = HelperFile.getVersionCode("${PARAMS[ARGS_PATH]}")
+            val versionName = HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
+
             val user = ModelUser.findByEmail("${PARAMS[ARGS_USER_EMAIL]}")
             if (user == null) {
                 Info.userNotFound("${PARAMS[ARGS_USER_EMAIL]}")
@@ -213,14 +186,37 @@ fun main(args: Array<String>) {
             }
             GooglePlayUpload.upload(
                 path = "${PARAMS[ARGS_PATH_BUILD]}",
-                applicationId = "$applicationId",
+                applicationId = applicationId,
                 versionCode = "$versionCode",
-                versionName = "$versionName",
+                versionName = versionName,
                 uploadTrack = "${PARAMS[ARGS_UPLOAD_TRACK]}",
                 user = user ?: ModelUser()
             )
         }
+        PARAMS[ARGS_MAILING_SLACK] != "false" -> {
+            if ("${PARAMS[ARGS_UPLOAD_TRACK]}" == "false") {
+                Info.trackRequired()
+            }
+            if ("${PARAMS[ARGS_USER_EMAIL]}" == "false") {
+                Info.selectUser()
+            }
+
+            val applicationId = HelperFile.getApplicationId("${PARAMS[ARGS_PATH]}")
+            val versionCode = HelperFile.getVersionCode("${PARAMS[ARGS_PATH]}")
+            val versionName = HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
+            val appName = HelperFile.findAppName("${PARAMS[ARGS_PATH]}")
+
+            Info.sendSlackWebhook(
+                appName,
+                applicationId,
+                "${PARAMS[ARGS_UPLOAD_TRACK]}",
+                "$versionCode",
+                versionName,
+                "${PARAMS[ARGS_MAILING_SLACK_DESC]}",
+                "${PARAMS[ARGS_USER_EMAIL]}"
+            )
+        }
     }
 
-    ConnectDb.close()
+    exit()
 }
