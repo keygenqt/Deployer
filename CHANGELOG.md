@@ -1,6 +1,6 @@
 
 
-## Updated: 22/04/20 07:43 PM
+## Updated: 23/04/20 11:56 PM
 
 ## Info
 
@@ -17,6 +17,8 @@
 ## Version: not released 
 
 ### Changed
+* [Change] up version, update desc (Vitaliy Zarubin)
+* [Change] add just send to Slack + --get-application-name (Vitaliy Zarubin)
 * [Change] Update description (Vitaliy Zarubin)
 
 ## Version: 0.1.3 (22/04/20 07:36 PM) 
