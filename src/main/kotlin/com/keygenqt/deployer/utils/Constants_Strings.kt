@@ -39,10 +39,18 @@ Options
     --mailing-gmail             Newsletter only GMail
     --mailing-slack             Newsletter only Slack
     --mailing-slack-desc        Slack additional Information
+
+  Sending in Slack
+    --path                      Path to folder with project
+    --mailing-slack             Newsletter only Slack
+    --mailing-slack-desc        Slack additional Information
+    --user-email                Email user form config for Slack "Slack Webhook Users"
+    --upload-track              Upload type build (production/internal)
     
-  GradleHelper
+  FileHelper
     --path                      Path to folder with project
     --get-application-id        Get applicationId
+    --get-application-name      Get application device name
     --get-version-code          Get versionCode
     --get-version-name          Get versionName
     --get-version-code-up       Get versionCode Up

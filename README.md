@@ -78,6 +78,7 @@ Options
   FileHelper
     --path                      Path to folder with project
     --get-application-id        Get applicationId
+    --get-application-name      Get application device name
     --get-version-code          Get versionCode
     --get-version-name          Get versionName
     --get-version-code-up       Get versionCode Up
