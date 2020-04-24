@@ -53,10 +53,10 @@ class HelperFile {
             }
             val string = String(Files.readAllBytes(File("$path/app/build.gradle").toPath()))
             var res = string.replace("\r\n", "").replace("\n", "")
-                .replace(""".*applicationId\s"([A-z.]+)".*""".toRegex(), "$1")
+                .replace(""".*applicationId\s"([\dA-z._]+)".*""".toRegex(), "$1")
             if (res.contains("applicationId")) {
                 res = string.replace("\r\n", "").replace("\n", "")
-                    .replace(""".*applicationId\s'([A-z.]+)'.*""".toRegex(), "$1")
+                    .replace(""".*applicationId\s'([\dA-z._]+)'.*""".toRegex(), "$1")
             }
             if (res.contains("applicationId")) {
                 Info.errorGetApplicationId()
