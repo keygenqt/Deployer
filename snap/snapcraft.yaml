@@ -1,6 +1,6 @@
 name: deployer
 base: core18
-version: '0.1.4'
+version: '0.1.5'
 summary: Deployer app deployment assistant on Google Play and a little bit more.
 description: |
   * Web interface for generate access token Oauth 2.0
@@ -18,7 +18,7 @@ parts:
     plugin: gradle
     gradle-output-dir: build/libs
     gradle-options: [bootJar]
-    source: https://keygenqt_work@bitbucket.org/keygenqt_work/deployer.git
+    source: https://github.com/keygenqt/deployer.git
     source-type: git
     source-tag: master
     build-environment:
