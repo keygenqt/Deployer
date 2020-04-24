@@ -62,67 +62,67 @@ class GooglePlayUpload {
             } else {
                 ModelSettings.findByUserId(user.id)?.let { settings ->
                     OAuthService.oauthRefreshToken(settings) {
-                            queryGetId(settings, applicationId) { id ->
-                                Info.getProjectIdSuccessful()
-                                queryUploadFile(settings, applicationId, typeFile, build, id) {
-                                    Info.uploadFileSuccessful()
-                                    queryUpdateInfo(
-                                        settings,
-                                        applicationId,
-                                        versionCode,
-                                        versionName,
-                                        uploadTrack,
-                                        id,
-                                        text
+                        queryGetId(settings, applicationId) { id ->
+                            Info.getProjectIdSuccessful()
+                            queryUploadFile(settings, applicationId, typeFile, build, id) {
+                                Info.uploadFileSuccessful()
+                                queryUpdateInfo(
+                                    settings,
+                                    applicationId,
+                                    versionCode,
+                                    versionName,
+                                    uploadTrack,
+                                    id,
+                                    text
+                                ) {
+                                    Info.updateInfoSuccessful()
+
+                                    if ("${PARAMS[ARGS_MAILING]}" == "true"
+                                        || "${PARAMS[ARGS_MAILING_GMAIL]}" == "true"
+                                        || "${PARAMS[ARGS_MAILING_SLACK]}" == "true"
                                     ) {
-                                        Info.updateInfoSuccessful()
+                                        queryProjectInfo(settings, applicationId, id) { title ->
 
-                                        if ("${PARAMS[ARGS_MAILING]}" == "true"
-                                            || "${PARAMS[ARGS_MAILING_GMAIL]}" == "true"
-                                            || "${PARAMS[ARGS_MAILING_SLACK]}" == "true"
-                                        ) {
-                                            queryProjectInfo(settings, applicationId, id) { title ->
+                                            // title - google play app name
+                                            // title2 - devise app name
+                                            val title2 = HelperFile.findAppName(path.substring(0, path.indexOf("/app")))
 
-                                                // title - google play app name
-                                                // title2 - devise app name
-                                                var title2 = HelperFile.findAppName(path)
+                                            if ("${PARAMS[ARGS_MAILING]}" == "true" || "${PARAMS[ARGS_MAILING_SLACK]}" == "true") {
+                                                Info.sendSlackWebhook(
+                                                    title2,
+                                                    applicationId,
+                                                    uploadTrack,
+                                                    versionCode,
+                                                    versionName,
+                                                    "${PARAMS[ARGS_MAILING_SLACK_DESC]}",
+                                                    user.email
+                                                )
+                                            }
 
-                                                if ("${PARAMS[ARGS_MAILING]}" == "true" || "${PARAMS[ARGS_MAILING_SLACK]}" == "true") {
-                                                    Info.sendSlackWebhook(
-                                                        title2,
-                                                        applicationId,
-                                                        uploadTrack,
+                                            if ("${PARAMS[ARGS_MAILING]}" == "true" || "${PARAMS[ARGS_MAILING_GMAIL]}" == "true") {
+                                                queryUploadCommit(settings, applicationId, id) {
+                                                    Info.commitSuccessful()
+                                                    Info.sendMailingUpload(
+                                                        settings, title2, applicationId, uploadTrack,
                                                         versionCode,
-                                                        versionName,
-                                                        "${PARAMS[ARGS_MAILING_SLACK_DESC]}",
-                                                        user.email
+                                                        versionName
                                                     )
                                                 }
-
-                                                if ("${PARAMS[ARGS_MAILING]}" == "true" || "${PARAMS[ARGS_MAILING_GMAIL]}" == "true") {
-                                                    queryUploadCommit(settings, applicationId, id) {
-                                                        Info.commitSuccessful()
-                                                        Info.sendMailingUpload(
-                                                            settings, title2, applicationId, uploadTrack,
-                                                            versionCode,
-                                                            versionName
-                                                        )
-                                                    }
-                                                }
                                             }
-                                        } else {
-                                            queryUploadCommit(settings, applicationId, id) {
-                                                Info.commitSuccessful()
-                                                exit()
-                                            }
+                                        }
+                                    } else {
+                                        queryUploadCommit(settings, applicationId, id) {
+                                            Info.commitSuccessful()
+                                            exit()
                                         }
                                     }
                                 }
                             }
                         }
-                    } ?: run {
-                        Info.settingsNotFound()
                     }
+                } ?: run {
+                    Info.settingsNotFound()
+                }
 
             }
         }
