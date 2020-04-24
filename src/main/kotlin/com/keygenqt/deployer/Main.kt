@@ -130,7 +130,7 @@ fun main(args: Array<String>) {
 
     when {
         PARAMS[ARGS_SERVER] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "false") {
+            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
                 println("<< server")
             }
             if (Checker.checkServerParams()) {
@@ -140,7 +140,7 @@ fun main(args: Array<String>) {
             }
         }
         PARAMS[ARGS_CHANGELOG] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "false") {
+            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
                 println("<< changelog")
             }
             Changelog.generate("${PARAMS[ARGS_PATH]}")
@@ -151,7 +151,7 @@ fun main(args: Array<String>) {
         PARAMS[ARGS_GET_VERSION_NAME] == "true" -> HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
         PARAMS[ARGS_GET_VERSION_CODE_UP] == "true" -> print(HelperFile.getVersionCodeUp("${PARAMS[ARGS_PATH]}"))
         PARAMS[ARGS_VERSION_CODE_UP] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "false") {
+            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
                 println("<< version code up")
             }
             HelperFile.versionCodeUp("${PARAMS[ARGS_PATH]}")?.let {
@@ -161,7 +161,7 @@ fun main(args: Array<String>) {
             }
         }
         PARAMS[ARGS_VERSION_NAME_UP] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "false") {
+            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
                 println("<< version name up")
             }
             HelperFile.versionNameUp("${PARAMS[ARGS_PATH]}")?.let {
@@ -171,7 +171,7 @@ fun main(args: Array<String>) {
             }
         }
         PARAMS[ARGS_GET_VERSION_NAME_UP] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "false") {
+            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
                 println("<< version name up")
             }
             HelperFile.getVersionNameUp("${PARAMS[ARGS_PATH]}")?.let {
@@ -181,7 +181,7 @@ fun main(args: Array<String>) {
             }
         }
         PARAMS[ARGS_PATH_BUILD] != "false" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "false") {
+            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
                 println("<< upload")
             }
             if ("${PARAMS[ARGS_UPLOAD_TRACK]}" == "false") {
@@ -212,7 +212,7 @@ fun main(args: Array<String>) {
             )
         }
         PARAMS[ARGS_MAILING_SLACK] != "false" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "false") {
+            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
                 println("<< mailing slack")
             }
             if ("${PARAMS[ARGS_UPLOAD_TRACK]}" == "false") {

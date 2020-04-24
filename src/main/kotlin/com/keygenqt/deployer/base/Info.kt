@@ -16,6 +16,7 @@
 
 package com.keygenqt.deployer.base
 
+import com.keygenqt.deployer.PARAMS
 import com.keygenqt.deployer.base.retrofit.RetrofitBuilder
 import com.keygenqt.deployer.base.retrofit.RetrofitQuery
 import com.keygenqt.deployer.components.SingleTemplate
@@ -194,6 +195,16 @@ class Info {
             description: String,
             userEmail: String
         ) {
+
+            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+                println("<< $projectName")
+                println("<< $applicationId")
+                println("<< $uploadTrack")
+                println("<< $versionCode")
+                println("<< $versionName")
+                println("<< $description")
+                println("<< $userEmail")
+            }
 
             val listUrl =
                 if (uploadTrack == "production") Configuration.getSlackWebhookSendProd() else Configuration.getSlackWebhookSendTest()
