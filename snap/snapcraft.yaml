@@ -1,6 +1,6 @@
 name: deployer
 base: core18
-version: '0.1.9'
+version: '0.2.0'
 summary: Deployer app deployment assistant on Google Play and a little bit more.
 description: |
   * Web interface for generate access token Oauth 2.0
