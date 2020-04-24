@@ -33,9 +33,9 @@ class HelperFile {
                 val strings =
                     String(Files.readAllBytes(File("$path/app/src/main/res/strings/values/strings.xml").toPath()))
                 val appNameKey = manifest.replace("\r\n", "").replace("\n", "")
-                    .replace(""".*android\:label\=\"\@string\/([A-z_]+)".*""".toRegex(), "$1")
+                    .replace(""".*android\:label\=\"\@string\/([\dA-z_]+)".*""".toRegex(), "$1")
                 val appName = strings.replace("\r\n", "").replace("\n", "").replace(
-                    """.*\<string\sname\=\"$appNameKey\"\>([A-z_\-\s\!\@\#\$\%\^\&\*\(\)]+)\<\/string\>.*""".toRegex(),
+                    """.*\<string\sname\=\"$appNameKey\"\>([\dA-z_\-\s\!\@\#\$\%\^\&\*\(\)]+)\<\/string\>.*""".toRegex(),
                     "$1"
                 )
                 if (appName.contains("</string")) {
