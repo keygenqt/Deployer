@@ -237,6 +237,9 @@ fun main(args: Array<String>) {
                 "${PARAMS[ARGS_USER_EMAIL]}"
             )
         }
+        else -> {
+            println("<< Command not found")
+        }
     }
 
     exit()

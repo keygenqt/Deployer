@@ -28,18 +28,23 @@ class HelperFile {
             if (path.isEmpty()) {
                 Info.errorPath()
             }
-            val manifest = String(Files.readAllBytes(File("$path/app/src/main/AndroidManifest.xml").toPath()))
-            val strings = String(Files.readAllBytes(File("$path/app/src/main/res/strings/values/strings.xml").toPath()))
-            val appNameKey = manifest.replace("\r\n", "").replace("\n", "")
-                .replace(""".*android\:label\=\"\@string\/([A-z_]+)".*""".toRegex(), "$1")
-            val appName = strings.replace("\r\n", "").replace("\n", "").replace(
-                """.*\<string\sname\=\"$appNameKey\"\>([A-z_\-\s\!\@\#\$\%\^\&\*\(\)]+)\<\/string\>.*""".toRegex(),
-                "$1"
-            )
-            if (appName.contains("</string")) {
-                return ""
+            return try {
+                val manifest = String(Files.readAllBytes(File("$path/app/src/main/AndroidManifest.xml").toPath()))
+                val strings =
+                    String(Files.readAllBytes(File("$path/app/src/main/res/strings/values/strings.xml").toPath()))
+                val appNameKey = manifest.replace("\r\n", "").replace("\n", "")
+                    .replace(""".*android\:label\=\"\@string\/([A-z_]+)".*""".toRegex(), "$1")
+                val appName = strings.replace("\r\n", "").replace("\n", "").replace(
+                    """.*\<string\sname\=\"$appNameKey\"\>([A-z_\-\s\!\@\#\$\%\^\&\*\(\)]+)\<\/string\>.*""".toRegex(),
+                    "$1"
+                )
+                if (appName.contains("</string")) {
+                    return ""
+                }
+                appName
+            } catch (ex: java.lang.Exception) {
+                ""
             }
-            return appName
         }
 
         fun getApplicationId(path: String): String {
