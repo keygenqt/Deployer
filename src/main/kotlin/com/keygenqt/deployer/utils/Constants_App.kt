@@ -21,7 +21,7 @@ import com.keygenqt.deployer.base.SnapDirs
 import kotlin.system.exitProcess
 
 const val APPLICATION_NAME = "Deployer"
-const val VERSION = "0.1.8"
+const val VERSION = "0.1.9"
 const val INNER_APP_NAME = "deployer"
 
 val PATH_APP_TEMP_DIR = SnapDirs.getEnv(SNAP_USER_COMMON)

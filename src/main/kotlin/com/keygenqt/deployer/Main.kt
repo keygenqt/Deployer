@@ -128,117 +128,119 @@ fun main(args: Array<String>) {
         println("$PARAMS}")
     }
 
-    when {
-        PARAMS[ARGS_SERVER] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
-                println("<< server")
-            }
-            if (Checker.checkServerParams()) {
-                SpringApplication.run(StartWebApplication::class.java, *args)
-            } else {
-                Info.setRequiredParams()
-            }
+    if (PARAMS[ARGS_SERVER] == "true") {
+        if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+            println("<< server")
         }
-        PARAMS[ARGS_CHANGELOG] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
-                println("<< changelog")
-            }
-            Changelog.generate("${PARAMS[ARGS_PATH]}")
+        if (Checker.checkServerParams()) {
+            SpringApplication.run(StartWebApplication::class.java, *args)
+        } else {
+            Info.setRequiredParams()
         }
-        PARAMS[ARGS_APPLICATION_NAME] == "true" -> print(HelperFile.findAppName("${PARAMS[ARGS_PATH]}"))
-        PARAMS[ARGS_APPLICATION_ID] == "true" -> print(HelperFile.getApplicationId("${PARAMS[ARGS_PATH]}"))
-        PARAMS[ARGS_GET_VERSION_CODE] == "true" -> print(HelperFile.getVersionCode("${PARAMS[ARGS_PATH]}"))
-        PARAMS[ARGS_GET_VERSION_NAME] == "true" -> HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
-        PARAMS[ARGS_GET_VERSION_CODE_UP] == "true" -> print(HelperFile.getVersionCodeUp("${PARAMS[ARGS_PATH]}"))
-        PARAMS[ARGS_VERSION_CODE_UP] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
-                println("<< version code up")
+    } else {
+        when {
+            PARAMS[ARGS_CHANGELOG] == "true" -> {
+                if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+                    println("<< changelog")
+                }
+                Changelog.generate("${PARAMS[ARGS_PATH]}")
             }
-            HelperFile.versionCodeUp("${PARAMS[ARGS_PATH]}")?.let {
-                print(it)
-            } ?: run {
-                Info.errorUpVersionCode()
+            PARAMS[ARGS_APPLICATION_NAME] == "true" -> print(HelperFile.findAppName("${PARAMS[ARGS_PATH]}"))
+            PARAMS[ARGS_APPLICATION_ID] == "true" -> print(HelperFile.getApplicationId("${PARAMS[ARGS_PATH]}"))
+            PARAMS[ARGS_GET_VERSION_CODE] == "true" -> print(HelperFile.getVersionCode("${PARAMS[ARGS_PATH]}"))
+            PARAMS[ARGS_GET_VERSION_NAME] == "true" -> HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
+            PARAMS[ARGS_GET_VERSION_CODE_UP] == "true" -> print(HelperFile.getVersionCodeUp("${PARAMS[ARGS_PATH]}"))
+            PARAMS[ARGS_VERSION_CODE_UP] == "true" -> {
+                if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+                    println("<< version code up")
+                }
+                HelperFile.versionCodeUp("${PARAMS[ARGS_PATH]}")?.let {
+                    print(it)
+                } ?: run {
+                    Info.errorUpVersionCode()
+                }
             }
-        }
-        PARAMS[ARGS_VERSION_NAME_UP] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
-                println("<< version name up")
+            PARAMS[ARGS_VERSION_NAME_UP] == "true" -> {
+                if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+                    println("<< version name up")
+                }
+                HelperFile.versionNameUp("${PARAMS[ARGS_PATH]}")?.let {
+                    print(it)
+                } ?: run {
+                    Info.errorUpVersionName()
+                }
             }
-            HelperFile.versionNameUp("${PARAMS[ARGS_PATH]}")?.let {
-                print(it)
-            } ?: run {
-                Info.errorUpVersionName()
+            PARAMS[ARGS_GET_VERSION_NAME_UP] == "true" -> {
+                if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+                    println("<< version name up")
+                }
+                HelperFile.getVersionNameUp("${PARAMS[ARGS_PATH]}")?.let {
+                    print(it)
+                } ?: run {
+                    Info.errorUpVersionName()
+                }
             }
-        }
-        PARAMS[ARGS_GET_VERSION_NAME_UP] == "true" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
-                println("<< version name up")
-            }
-            HelperFile.getVersionNameUp("${PARAMS[ARGS_PATH]}")?.let {
-                print(it)
-            } ?: run {
-                Info.errorUpVersionName()
-            }
-        }
-        PARAMS[ARGS_PATH_BUILD] != "false" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
-                println("<< upload")
-            }
-            if ("${PARAMS[ARGS_UPLOAD_TRACK]}" == "false") {
-                Info.trackRequired()
-            }
-            if ("${PARAMS[ARGS_USER_EMAIL]}" == "false") {
-                Info.selectUser()
-            }
-            val applicationId = HelperFile.getApplicationId("${PARAMS[ARGS_PATH]}")
-            val versionCode = HelperFile.getVersionCode("${PARAMS[ARGS_PATH]}")
-            val versionName = HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
+            PARAMS[ARGS_PATH_BUILD] != "false" -> {
+                if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+                    println("<< upload")
+                }
+                if ("${PARAMS[ARGS_UPLOAD_TRACK]}" == "false") {
+                    Info.trackRequired()
+                }
+                if ("${PARAMS[ARGS_USER_EMAIL]}" == "false") {
+                    Info.selectUser()
+                }
+                val applicationId = HelperFile.getApplicationId("${PARAMS[ARGS_PATH]}")
+                val versionCode = HelperFile.getVersionCode("${PARAMS[ARGS_PATH]}")
+                val versionName = HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
 
-            val user = ModelUser.findByEmail("${PARAMS[ARGS_USER_EMAIL]}")
-            if (user == null) {
-                Info.userNotFound("${PARAMS[ARGS_USER_EMAIL]}")
+                val user = ModelUser.findByEmail("${PARAMS[ARGS_USER_EMAIL]}")
+                if (user == null) {
+                    Info.userNotFound("${PARAMS[ARGS_USER_EMAIL]}")
+                }
+                val file = File("${PARAMS[ARGS_PATH_BUILD]}")
+                if (!file.exists() || file.isDirectory) {
+                    Info.notFoundFileBuild("${PARAMS[ARGS_PATH_BUILD]}")
+                }
+                GooglePlayUpload.upload(
+                    path = "${PARAMS[ARGS_PATH_BUILD]}",
+                    applicationId = applicationId,
+                    versionCode = "$versionCode",
+                    versionName = versionName,
+                    uploadTrack = "${PARAMS[ARGS_UPLOAD_TRACK]}",
+                    user = user ?: ModelUser()
+                )
             }
-            val file = File("${PARAMS[ARGS_PATH_BUILD]}")
-            if (!file.exists() || file.isDirectory) {
-                Info.notFoundFileBuild("${PARAMS[ARGS_PATH_BUILD]}")
-            }
-            GooglePlayUpload.upload(
-                path = "${PARAMS[ARGS_PATH_BUILD]}",
-                applicationId = applicationId,
-                versionCode = "$versionCode",
-                versionName = versionName,
-                uploadTrack = "${PARAMS[ARGS_UPLOAD_TRACK]}",
-                user = user ?: ModelUser()
-            )
-        }
-        PARAMS[ARGS_MAILING_SLACK] != "false" -> {
-            if ("${PARAMS[ARGS_DEBUG]}" == "true") {
-                println("<< mailing slack")
-            }
-            if ("${PARAMS[ARGS_UPLOAD_TRACK]}" == "false") {
-                Info.trackRequired()
-            }
-            if ("${PARAMS[ARGS_USER_EMAIL]}" == "false") {
-                Info.selectUser()
-            }
+            PARAMS[ARGS_MAILING_SLACK] != "false" -> {
+                if ("${PARAMS[ARGS_DEBUG]}" == "true") {
+                    println("<< mailing slack")
+                }
+                if ("${PARAMS[ARGS_UPLOAD_TRACK]}" == "false") {
+                    Info.trackRequired()
+                }
+                if ("${PARAMS[ARGS_USER_EMAIL]}" == "false") {
+                    Info.selectUser()
+                }
 
-            val applicationId = HelperFile.getApplicationId("${PARAMS[ARGS_PATH]}")
-            val versionCode = HelperFile.getVersionCode("${PARAMS[ARGS_PATH]}")
-            val versionName = HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
-            val appName = HelperFile.findAppName("${PARAMS[ARGS_PATH]}")
+                val applicationId = HelperFile.getApplicationId("${PARAMS[ARGS_PATH]}")
+                val versionCode = HelperFile.getVersionCode("${PARAMS[ARGS_PATH]}")
+                val versionName = HelperFile.getVersionName("${PARAMS[ARGS_PATH]}")
+                val appName = HelperFile.findAppName("${PARAMS[ARGS_PATH]}")
 
-            Info.sendSlackWebhook(
-                appName,
-                applicationId,
-                "${PARAMS[ARGS_UPLOAD_TRACK]}",
-                "$versionCode",
-                versionName,
-                "${PARAMS[ARGS_MAILING_SLACK_DESC]}",
-                "${PARAMS[ARGS_USER_EMAIL]}"
-            )
+                Info.sendSlackWebhook(
+                    appName,
+                    applicationId,
+                    "${PARAMS[ARGS_UPLOAD_TRACK]}",
+                    "$versionCode",
+                    versionName,
+                    "${PARAMS[ARGS_MAILING_SLACK_DESC]}",
+                    "${PARAMS[ARGS_USER_EMAIL]}"
+                )
+            }
+            else -> {
+                println("<< Command not found")
+            }
         }
-        else -> {
-            println("<< Command not found")
-        }
+        exit()
     }
 }
