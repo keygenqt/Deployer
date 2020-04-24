@@ -209,6 +209,11 @@ class Info {
             val listUrl =
                 if (uploadTrack == "production") Configuration.getSlackWebhookSendProd() else Configuration.getSlackWebhookSendTest()
             val userId = Configuration.getSlackUser(userEmail)
+
+            if (listUrl.isEmpty()) {
+                println("Send for slack empty!")
+            }
+
             for (url in listUrl) {
 
                 val json = JSONObject()

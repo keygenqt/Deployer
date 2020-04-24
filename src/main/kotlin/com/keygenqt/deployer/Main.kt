@@ -241,6 +241,4 @@ fun main(args: Array<String>) {
             println("<< Command not found")
         }
     }
-
-    exit()
 }
