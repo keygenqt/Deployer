@@ -1,7 +1,7 @@
 Deployer
 ===================
 
-![picture](https://bitbucket.org/keygenqt_work/deployer/raw/9634ac1c37f76f6594acf31a1df428a9344d4fc6/src/main/resources/static/images/icon2.png)
+![picture](src/main/resources/static/images/icon2.png)
 
 ## Release
 
@@ -103,7 +103,7 @@ Options
 
 ### Run server Oauth 2.0
 
-![picture](https://bitbucket.org/keygenqt_work/deployer/raw/48301ae69416cb90f49a6d34871da8aabecc56dd/data/server-preview.png)
+![picture](data/server-preview.png)
 
 ```bash
 sudo crontab -e
@@ -143,7 +143,7 @@ deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-rel
 
 #### Send + Slack API
 
-![picture](https://bitbucket.org/keygenqt_work/deployer/raw/01120c3cd3183e9aeaee19f8708164153bde5207/data/slack-preview.png)
+![picture](data/slack-preview.png)
 
 ```bash
 deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-release.aab --upload-track=production --user-email=user@oauth.com --mailing-slack
@@ -151,7 +151,7 @@ deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-rel
 
 #### Send + GMail API
 
-![picture](https://bitbucket.org/keygenqt_work/deployer/raw/92b4fbbefb33bd6bc0489246ddfe927837f4481f/data/gmail-preview.png)
+![picture](data/gmail-preview.png)
 
 ```bash
 deployer --path-build=/your/dir/project/app/build/outputs/bundle/release/app-release.aab --upload-track=production --user-email=user@oauth.com --mailing-gmail
