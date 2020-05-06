@@ -5,13 +5,6 @@ BRANCH="$2"
 DIR="$3"
 USER="$4"
 
-################ check lock
-if test -f "./.lock"; then
-  echo "LOCK. NOW UPDATING."
-  exit 0
-fi
-################
-
 ################ check params
 if [ -z "$TYPE" ]; then
   echo "ERROR: Type params type script"
@@ -51,8 +44,6 @@ git checkout "$BRANCH" --quiet
 git pull --quiet
 ################
 
-/scripts/server/lock.sh
-
 case "$TYPE" in
 --tag)
   echo "-> START TAG"
@@ -67,7 +58,6 @@ case "$TYPE" in
   git add . >/dev/null && git commit -m "server - up name" >/dev/null && git push --quiet >/dev/null
 
   echo "-> ADD NEW TAG SUCCESSFULY ($newTag)"
-  /scripts/server/lock.sh
   ;;
 --production)
   echo "-> START PRODUCTION"
@@ -85,11 +75,11 @@ case "$TYPE" in
     /snap/bin/deployer --path="$DIR" --version-code-up
 
     ## build
-    ./gradlew --console=plain bundleRelease -Pandroid.injected.signing.store.password="$pass" -Pandroid.injected.signing.key.password="$pass" -Pandroid.injected.signing.store.file="$DIR/KEY/$pass.jks" -Pandroid.injected.signing.key.alias="$applicationId" >.lock
+    ./gradlew --console=plain bundleRelease -Pandroid.injected.signing.store.password="$pass" -Pandroid.injected.signing.key.password="$pass" -Pandroid.injected.signing.store.file="$DIR/KEY/$pass.jks" -Pandroid.injected.signing.key.alias="$applicationId" >.info
   } &>/dev/null
 
   ## get log
-  gradlewBuil=$(cat .lock)
+  gradlewBuil=$(cat .info)
 
   if [[ $gradlewBuil == *"BUILD SUCCESSFUL"* ]]; then
     echo "BUILD SUCCESSFUL"
@@ -102,7 +92,6 @@ case "$TYPE" in
   fi
 
   echo "-> END PRODUCTION"
-  /scripts/server/lock.sh
   ;;
 --internal)
   echo "-> START INTERNAL"
@@ -120,11 +109,11 @@ case "$TYPE" in
     /snap/bin/deployer --path="$DIR" --version-code-up
 
     ## build
-    ./gradlew --console=plain assembleForTest -Pandroid.injected.signing.store.password="$pass" -Pandroid.injected.signing.key.password="$pass" -Pandroid.injected.signing.store.file="$DIR/KEY/$pass.jks" -Pandroid.injected.signing.key.alias="$applicationId" >.lock
+    ./gradlew --console=plain assembleForTest -Pandroid.injected.signing.store.password="$pass" -Pandroid.injected.signing.key.password="$pass" -Pandroid.injected.signing.store.file="$DIR/KEY/$pass.jks" -Pandroid.injected.signing.key.alias="$applicationId" >.info
   } &>/dev/null
 
   ## get log
-  gradlewBuil=$(cat .lock)
+  gradlewBuil=$(cat .info)
 
   if [[ $gradlewBuil == *"BUILD SUCCESSFUL"* ]]; then
     echo "BUILD SUCCESSFUL"
@@ -138,7 +127,6 @@ case "$TYPE" in
   fi
 
   echo "-> END INTERNAL"
-  /scripts/server/lock.sh
   ;;
 --changelog)
   echo "-> START CHANGELOG"
@@ -151,11 +139,11 @@ case "$TYPE" in
 
   echo ""
   echo "-> END CHANGELOG"
-  /scripts/server/lock.sh
   ;;
 esac
 
-if test -f "./.lock"; then
-  rm "./.lock"
-  exit 0
+if test -f "./.info"; then
+  rm "./.info"
 fi
+
+exit 0
